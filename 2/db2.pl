@@ -19,7 +19,7 @@ kelias(minskas, kijevas, 422).
 
 % 1.4 galima nuvažiuoti iš miesto X į miestą Y nevažiuojant tokiu keliu, kurio ilgis viršija L kilometrų.
 
-galima_nuvaziuoti(Miestas1, Miestas2, Salyga) :- 
+galima_nuvaziuoti(Miestas1, Miestas2, Salyga) :-  
     kelias(Miestas1, Miestas2, Atstumas), Salyga > Atstumas.
 galima_nuvaziuoti(Miestas1, Miestas2, Salyga) :-
     kelias(Miestas1, MiestasTarp, Atstumas), Salyga > Atstumas,
@@ -36,11 +36,19 @@ div(X, Y, R) :-
     R is R0+1.
 div(X, Y, R) :-
     X > 0,
+    Y > 0,
     X0 is X - Y,
     div(X0, Y, R0),
     R is R0+1.
 div(X, Y, R) :-
+    X > 0,
+    Y < 0,
+    X0 is X + Y,
+    div(X0, Y, R0),
+    R is R0-1.
+div(X, Y, R) :-
     X < 0,
+    Y > 0,
     X0 is X + Y,
     div(X0, Y, R0),
     R is R0-1.
