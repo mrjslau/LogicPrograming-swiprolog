@@ -7,7 +7,7 @@
 
 sar([5,-1,3]).
 sar([5|[7,14,6,-8]]).
-sar([[8, 9, 10]|[-20,12,10,5,12,1,0,12,-10]]).
+sar([8|[-20,12,10,5,12,1,0,12,-10]]).
 sar([2|[8,0,1,4,-2,13,6,6,6]]).
 sar([6|[8,4,-2]]).
 
@@ -41,19 +41,16 @@ tr_suma(Sar, Sum) :-
 % 2.4 tsuma(S,K) - skaičių sąrašo S teigiamų elementų suma yra K. Pavyzdžiui:
 %         ?- tsuma([5,-1,3],K).
 %         K = 8.
-add_next_if_pos([H|_], A) :-
+add_if_pos(H, Rest, Sum) :-
   H > 0,
-  A is H + 0.
-add_next_if_pos([_|_], A) :-
-  A is 0.
+  Sum is H + Rest.
+add_if_pos(H, Rest, Sum) :-
+  Sum is Rest.
 
-tsuma([], K) :-
-  K == 0.
-tsuma(S, K) :- 
-  add_next_if_pos(S, A),
-  K1 is K - A,
-  S = [_|T],
-  tsuma(T, K1).
+sumz_list([], 0).
+sumz_list([H|T], Sum) :-
+  sumz_list(T, Rest),
+  add_if_pos(H, Rest, Sum).
 
 % 3.7 sulieti(S1,S2,R) - duoti išrūšiuoti didėjimo tvarka sąrašai S1 ir S2.
 % Sąrašas R gaunamas suliejus šiuos du sąrašus taip, kad jo elementai eitų didėjimo tvarka. Pavyzdžiui:
