@@ -5,12 +5,6 @@
 % kiek įmanoma, deklaratyvios programos.
 % Nenaudokite Prolog darbo su sąrašais predikatų.
 
-sar([5,-1,3]).
-sar([5|[7,14,6,-8]]).
-sar([8|[-20,12,10,5,12,1,0,12,-10]]).
-sar([2|[8,0,1,4,-2,13,6,6,6]]).
-sar([6|[8,4,-2]]).
-
 % 1.6 tr_suma(Sar,Sum) - teisingas, kai duotame sąraše Sar galima rasti
 % tris iš eilės einančius skaičius, kurių suma lygi Sum. Pavyzdžiui:
 %         ?- tr_suma([1,4,-2,13,6],15).
