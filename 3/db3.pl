@@ -44,7 +44,7 @@ tr_suma(Sar, Sum) :-
 add_if_pos(H, Rest, Sum) :-
   H > 0,
   Sum is H + Rest.
-add_if_pos(H, Rest, Sum) :-
+add_if_pos(_, Rest, Sum) :-
   Sum is Rest.
 
 sumz_list([], 0).
@@ -52,14 +52,48 @@ sumz_list([H|T], Sum) :-
   sumz_list(T, Rest),
   add_if_pos(H, Rest, Sum).
 
+tsuma(S, K) :-
+  sumz_list(S, K).
+
 % 3.7 sulieti(S1,S2,R) - duoti išrūšiuoti didėjimo tvarka sąrašai S1 ir S2.
 % Sąrašas R gaunamas suliejus šiuos du sąrašus taip, kad jo elementai eitų didėjimo tvarka. Pavyzdžiui:
 %         ?- sulieti([1,4,11],[2,5,7],R).
 %         R = [1,2,4,5,7,11].
 
+add_greater(H1, H2, R) :-
+  H1 > H2,
+  R == [],
+  R is [H1|[]].
+add_greater(H1, H2, R) :-
+  H1 =< H2,
+  R == [],
+  R is [H2|[]].
 
-% posarasis(S1,S2) - sąrašas S2 susideda iš (gal būt ne visų) sąrašo S1 elementų,
+%merge([],[],[]).
+%merge([H1|T1], [H2|T2], R) :-
+%  merge(T1, T2, R),
+%  add_greater(H1, H2, R).
+
+%sulieti(S1, S2, R) :-
+%  merge(S1, S2, R).
+
+
+% 4.9 posarasis(S1,S2) - sąrašas S2 susideda iš (gal būt ne visų) sąrašo S1 elementų,
 % išdėstytų ta pačia tvarka, kaip ir sąraše S1.
 % Kitaip tariant, iš sąrašo S1 išmetus tam tikrus elementus, galime gauti sąrašą S2. Pavyzdžiui:
 %         ?- posarasis([1,8,3,5],[1,3]).
 %         true.
+is_found_in([H], H, T1) :-
+  T1 = [].
+is_found_in([H| T], H, T1) :-
+  T1 = T.
+is_found_in([_| T], H2, T1) :-
+  is_found_in(T, H2, T1).
+
+subset(_, []).
+subset(S1, [H2| T2]) :-
+  is_found_in(S1, H2, NT),
+  subset(NT, T2).
+
+posarasis(S1, S2) :-
+  subset(S1, S2).
