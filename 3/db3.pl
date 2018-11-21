@@ -59,24 +59,15 @@ tsuma(S, K) :-
 % Sąrašas R gaunamas suliejus šiuos du sąrašus taip, kad jo elementai eitų didėjimo tvarka. Pavyzdžiui:
 %         ?- sulieti([1,4,11],[2,5,7],R).
 %         R = [1,2,4,5,7,11].
+merge([],L,L).
+merge(L,[],L).
+merge([H1|T1], [H2|T2], L) :- 
+    H1 < H2 -> L = [H1|R], merge(T1,[H2|T2],R) ;
+    H1 > H2 -> L = [H2|R], merge([H1|T1],T2,R) ;
+    L = [H1,H2|R], merge(T1,T2,R).
 
-add_greater(H1, H2, R) :-
-  H1 > H2,
-  R == [],
-  R is [H1|[]].
-add_greater(H1, H2, R) :-
-  H1 =< H2,
-  R == [],
-  R is [H2|[]].
-
-%merge([],[],[]).
-%merge([H1|T1], [H2|T2], R) :-
-%  merge(T1, T2, R),
-%  add_greater(H1, H2, R).
-
-%sulieti(S1, S2, R) :-
-%  merge(S1, S2, R).
-
+sulieti(S1, S2, R) :-
+  merge(S1, S2, R).
 
 % 4.9 posarasis(S1,S2) - sąrašas S2 susideda iš (gal būt ne visų) sąrašo S1 elementų,
 % išdėstytų ta pačia tvarka, kaip ir sąraše S1.
