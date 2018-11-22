@@ -24,7 +24,7 @@ are_next_tr_eq([H|T], Sum, Count) :-
 
 tr_suma(Sar, Sum) :-
   list_atleast_three_items(Sar, 0),
-  are_next_tr_eq(Sar, Sum, 0);
+  are_next_tr_eq(Sar, Sum, 0), !;
   Sar = [_|T],
   tr_suma(T, Sum).
   
@@ -47,23 +47,21 @@ tsuma([H|T], Sum) :-
 sulieti([],L,L).
 sulieti(L,[],L).
 sulieti([H1|T1], [H2|T2], L) :- 
-    H1 < H2 -> L = [H1|R], sulieti(T1,[H2|T2],R) ;
-    H1 > H2 -> L = [H2|R], sulieti([H1|T1],T2,R) ;
-    L = [H1,H2|R], sulieti(T1,T2,R).
+    H1 < H2 -> L = [H1|R], sulieti(T1,[H2|T2],R), !;
+    H1 > H2 -> L = [H2|R], sulieti([H1|T1],T2,R), !;
+    L = [H1,H2|R], sulieti(T1,T2,R), !.
 
 % 4.9 posarasis(S1,S2) - sąrašas S2 susideda iš (gal būt ne visų) sąrašo S1 elementų,
 % išdėstytų ta pačia tvarka, kaip ir sąraše S1.
 % Kitaip tariant, iš sąrašo S1 išmetus tam tikrus elementus, galime gauti sąrašą S2. Pavyzdžiui:
 %         ?- posarasis([1,8,3,5],[1,3]).
 %         true.
-is_found_in([H], H, T1) :-
-  T1 = [].
-is_found_in([H| T], H, T1) :-
-  T1 = T.
+is_found_in([H], H, []).
+is_found_in([H| T], H, T).
 is_found_in([_| T], H2, T1) :-
   is_found_in(T, H2, T1).
 
 posarasis(_, []).
 posarasis(S1, [H2| T2]) :-
   is_found_in(S1, H2, NT),
-  posarasis(NT, T2).
+  posarasis(NT, T2), !.
