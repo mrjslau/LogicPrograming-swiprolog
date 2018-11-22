@@ -9,26 +9,22 @@
 % tris iš eilės einančius skaičius, kurių suma lygi Sum. Pavyzdžiui:
 %         ?- tr_suma([1,4,-2,13,6],15).
 %         true.
-list_atleast_three_items([], I) :-
-  I > 2.
-list_atleast_three_items(_, 3) :-
-  true.
+list_atleast_three_items(_, 3).
 list_atleast_three_items([_| T], I) :-
   I0 is I + 1,
   list_atleast_three_items(T, I0).
 
 are_next_tr_eq(_, Sum, 3) :-
   Sum == 0.
-are_next_tr_eq([H|T], Sum, C) :-
-  C < 4,
-  S1 is Sum - H,
-  C1 is C + 1,
-  are_next_tr_eq(T, S1, C1).
+are_next_tr_eq([H|T], Sum, Count) :-
+  Count < 4,
+  Sum1 is Sum - H,
+  Count1 is Count + 1,
+  are_next_tr_eq(T, Sum1, Count1).
 
 tr_suma(Sar, Sum) :-
   list_atleast_three_items(Sar, 0),
-  are_next_tr_eq(Sar, Sum, 0).
-tr_suma(Sar, Sum) :-
+  are_next_tr_eq(Sar, Sum, 0);
   Sar = [_|T],
   tr_suma(T, Sum).
   
@@ -36,9 +32,7 @@ tr_suma(Sar, Sum) :-
 %         ?- tsuma([5,-1,3],K).
 %         K = 8.
 add_if_pos(H, Rest, Sum) :-
-  H > 0,
-  Sum is H + Rest.
-add_if_pos(_, Rest, Sum) :-
+  H > 0 -> Sum is H + Rest;
   Sum is Rest.
 
 sumz_list([], 0).
